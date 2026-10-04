@@ -1,0 +1,266 @@
+{
+  "address": "GeMiAf5naVeLTMVc15XVT5cje8SkbRaMPBXe6Jy8VMEB",
+  "metadata": {
+    "name": "trust_bridge",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "TrustBridge: verifiable credential hashes anchored on Solana"
+  },
+  "instructions": [
+    {
+      "name": "issue_credential",
+      "discriminator": [
+        255,
+        193,
+        171,
+        224,
+        68,
+        171,
+        194,
+        87
+      ],
+      "accounts": [
+        {
+          "name": "credential",
+          "writable": true
+        },
+        {
+          "name": "issuer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "credential_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "revoke_credential",
+      "discriminator": [
+        38,
+        123,
+        95,
+        95,
+        223,
+        158,
+        169,
+        87
+      ],
+      "accounts": [
+        {
+          "name": "credential",
+          "writable": true
+        },
+        {
+          "name": "issuer",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "verify_credential",
+      "discriminator": [
+        139,
+        189,
+        60,
+        127,
+        32,
+        241,
+        162,
+        134
+      ],
+      "accounts": [
+        {
+          "name": "credential"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "VerificationResult"
+        }
+      }
+    }
+  ],
+  "accounts": [
+    {
+      "name": "CredentialRecord",
+      "discriminator": [
+        115,
+        231,
+        45,
+        163,
+        248,
+        224,
+        106,
+        207
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "CredentialIssued",
+      "discriminator": [
+        194,
+        216,
+        28,
+        159,
+        89,
+        29,
+        72,
+        177
+      ]
+    },
+    {
+      "name": "CredentialRevoked",
+      "discriminator": [
+        127,
+        131,
+        241,
+        234,
+        50,
+        139,
+        145,
+        204
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "UnauthorizedIssuer",
+      "msg": "Only the original issuer can revoke this credential."
+    },
+    {
+      "code": 6001,
+      "name": "AlreadyRevoked",
+      "msg": "This credential has already been revoked."
+    }
+  ],
+  "types": [
+    {
+      "name": "CredentialRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "credential_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "is_valid",
+            "type": "bool"
+          },
+          {
+            "name": "issued_at",
+            "type": "i64"
+          },
+          {
+            "name": "revoked_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CredentialIssued",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "credential",
+            "type": "pubkey"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "credential_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "issued_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CredentialRevoked",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "credential",
+            "type": "pubkey"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "revoked_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VerificationResult",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "is_valid",
+            "type": "bool"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "credential_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
