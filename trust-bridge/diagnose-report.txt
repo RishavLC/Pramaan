@@ -1,0 +1,73 @@
+
+==== 1. WALLET: which Anchor.toml does anchor read, and what does it say? ====
+cwd: /mnt/c/Users/Admin/OneDrive/Desktop/Pramaan/trust-bridge
+Anchor.toml found: /mnt/c/Users/Admin/OneDrive/Desktop/Pramaan/trust-bridge/Anchor.toml
+18:cluster = "devnet"
+19:wallet = "/home/rishav/.config/solana/trustbridge-devnet.json"
+ANCHOR_WALLET env       : <unset>
+ANCHOR_PROVIDER_URL env : <unset>
+Config File: /home/rishav/.config/solana/cli/config.yml
+RPC URL: https://api.devnet.solana.com 
+Keypair Path: /home/rishav/.config/solana/trustbridge-devnet.json 
+Anchor.toml wallet pubkey: DJYFvzQrHk2pyRQot5D8a9mARkJop2AhPZFm4F3xRnHx
+Expected deployer pubkey : DJYFvzQrHk2pyRQot5D8a9mARkJop2AhPZFm4F3xRnHx
+
+==== 2. PROGRAM ID consistency ====
+declare_id!   : DGspiMoU2zGPjW1ahv3P8gdz6p4S2jBwEkN5GKAdK1K
+9:trust_bridge = "DGspiMoU2zGPjW1ahv3P8gdz6p4S2jBwEkN5GKAdK1K"
+12:trust_bridge = "DGspiMoU2zGPjW1ahv3P8gdz6p4S2jBwEkN5GKAdK1K"
+keypair file  : 7q3jwWUepGWzgZuBVTcNffprQJtUGAw9KvjqrvwJNHjk
+expected      : DGspiMoU2zGPjW1ahv3P8gdz6p4S2jBwEkN5GKAdK1K
+stale ids in project:
+./scripts/diagnose-deploy.sh:28:echo "stale ids in project:"; grep -rnE 'GeMiAf5naVeLTMVc15XVT5cje8SkbRaMPBXe6Jy8VMEB|7q3jwWUepGWzgZuBVTcNffprQJtUGAw9KvjqrvwJNHjk' . --exclude-dir=node_modules --exclude-dir=target --exclude=diagnose-report.txt || echo "  none"
+
+==== 3. TOOLCHAIN: what actually compiles the program? ====
+solana CLI       : solana-cli 2.1.0 (src:c1080de4; feat:3176011155, client:Agave)
+anchor CLI       : anchor-cli 0.31.1
+which -a (first one wins):
+  solana -> /home/rishav/.local/share/solana/install/active_release/bin/solana
+  anchor -> /home/rishav/.cargo/bin/anchor
+  anchor -> /home/rishav/.cargo/bin/anchor
+  cargo-build-sbf -> /home/rishav/.local/share/solana/install/active_release/bin/cargo-build-sbf
+  cargo-build-sbf -> /home/rishav/.cargo/bin/cargo-build-sbf
+  cargo-build-sbf -> /home/rishav/.cargo/bin/cargo-build-sbf
+cargo build-sbf  :
+  solana-cargo-build-sbf 2.1.0
+  platform-tools v1.43
+  
+rustc            : rustc 1.99.0 (b940084d7 2026-09-28)   (RUSTUP_TOOLCHAIN=unset)
+RUSTFLAGS        : <unset>
+platform-tools cached under ~/.cache/solana:
+  v1.57
+cargo config files (can inject linker/rustflags):
+locked crates in Cargo.lock:
+  anchor-lang version = "0.31.2"
+  solana-program version = "2.3.0"
+
+==== 4. THE .so: is it a Solana v0 program built from current source? ====
+  2026-10-04 15:47:50.740626000  4469 bytes  programs/trust_bridge/src/lib.rs
+  2026-10-03 15:31:02.924698700  183352 bytes  target/deploy/trust_bridge.so
+!! .so is OLDER than lib.rs -> stale artifact
+target/deploy/trust_bridge.so: ELF 64-bit LSB pie executable, eBPF, version 1 (SYSV), statically linked, stripped
+-- ELF header (Flags = SBPF version: 0x0 is the v0 format a 2.1.0 CLI expects)
+  Type:                              DYN (Shared object file)
+  Machine:                           Linux BPF
+  Flags:                             0x3, CPU Version: 3
+  Number of section headers:         4
+-- program headers (a v0 Solana .so has a DYNAMIC segment):
+  LOAD           0x00000000000000e8 0x0000000000000000 0x0000000000000000
+  LOAD           0x0000000000004290 0x0000000100000000 0x0000000100000000
+-- sections:
+  Name Type
+  0] NULL
+  1] .rodata
+  2] .text
+  3] .shstrtab
+-- dynamic section present? 
+
+There is no dynamic section in this file.
+!! Flags=0x3,: NOT SBPF v0. Built by a newer toolchain / --arch flag than CLI 2.1.0 understands.
+
+==== 5. VERDICT HINTS ====
+solana-program locked at 2.3.0 while CLI is 2.1.0
+Report saved to /mnt/c/Users/Admin/OneDrive/Desktop/Pramaan/trust-bridge/diagnose-report.txt (contains no secrets).

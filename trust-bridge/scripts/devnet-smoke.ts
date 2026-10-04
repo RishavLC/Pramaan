@@ -18,7 +18,7 @@ dotenv.config();
 const apiKey = process.env.HELIUS_API_KEY;
 if (!apiKey) throw new Error("Set HELIUS_API_KEY in .env");
 
-const walletPath = (process.env.ANCHOR_WALLET ?? "~/.config/solana/id.json").replace(
+const walletPath = (process.env.ANCHOR_WALLET ?? "/home/rishav/.config/solana/trustbridge-devnet.json").replace(
   /^~/,
   os.homedir()
 );

@@ -38,7 +38,6 @@ Rust, Solana CLI, Anchor 0.31.1, Node 18+, Phantom wallet set to **Devnet**, and
 ```bash
 yarn install                       # root: anchor tests + scripts
 cp .env.example .env               # set HELIUS_API_KEY and ANCHOR_WALLET
-anchor keys sync                   # aligns the program ID with your keypair
 anchor build
 anchor test                        # runs the test suite on a local validator
 ```
@@ -46,7 +45,8 @@ anchor test                        # runs the test suite on a local validator
 ## Deploy to devnet
 
 ```bash
-npm run deploy:devnet              # = ./scripts/deploy-devnet.sh
+npm run deploy:devnet              # = ./scripts/deploy-devnet.sh (preflight-checked)
+./scripts/diagnose-deploy.sh       # if deploy fails: read-only report, no secrets
 npm run smoke:devnet               # optional end-to-end check on devnet
 ```
 

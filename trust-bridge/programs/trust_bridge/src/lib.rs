@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("GeMiAf5naVeLTMVc15XVT5cje8SkbRaMPBXe6Jy8VMEB");
+declare_id!("DGspiMoU2zGPjW1ahv3P8gdz6p4S2jBwEkN5GKAdK1K");
 
 /// Seed prefix for every CredentialRecord PDA.
 pub const CREDENTIAL_SEED: &[u8] = b"credential";
