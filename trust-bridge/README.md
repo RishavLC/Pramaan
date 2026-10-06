@@ -63,13 +63,18 @@ npm run app:dev                    # http://localhost:5173
 
 > If you redeploy with a new program ID, run `sync-idl` again.
 
-## Tabs
+## Pages
 
-- **Overview**: connection status, program-deployed check, balance, demo steps, hash/PDA preview.
-- **Agency A · Issuer**: issue a credential (shows signature + Solscan link) and revoke it.
-- **Agency B · Verifier**: verify by PDA, or by credential text + issuer. Shows issuer, valid or
-  revoked, and hash, with an optional trusted-issuer whitelist. Works with no wallet connected.
-- **History**: latest program transactions via Helius RPC, labelled, with Solscan links.
+- **Dashboard**: network status, live program check, metrics derived from real devnet transactions,
+  inter-agency trust flow, privacy-by-design summary, recent activity, quick actions.
+- **Issue / Revoke** (Agency A): issue a credential (signature + Solscan link) and revoke it.
+- **Verification** (Agency B): verify by PDA, or by credential text + issuer. Works with no wallet connected.
+- **Audit Log**: latest program transactions, labelled, with Solscan links.
+
+Other sidebar items (Agencies, Credentials, Revocations, Settings) are disabled placeholders for later phases.
+
+Frontend env (`app/.env.local`): `VITE_SOLANA_RPC_URL` (optional, wins), `VITE_HELIUS_API_KEY` (optional),
+`VITE_PROGRAM_ID` (optional check; the IDL is the source of truth). Never put keypairs in these files.
 
 ## 60-second demo script
 
