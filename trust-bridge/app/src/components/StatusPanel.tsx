@@ -2,120 +2,89 @@ import { useEffect, useState } from "react";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { HAS_HELIUS, PROGRAM_ID, shorten, solscanAccount } from "../lib/config";
-import { sha256, toHex } from "../lib/hash";
-import { deriveCredentialPda } from "../lib/pda";
 
-const SAMPLE = "Rishav Shrestha, Kathmandu-10, verified 2026-10-02";
-
-const DEMO_STEPS = [
-  "Open the app and connect Phantom on devnet.",
-  "Agency A · Issuer tab: enter the credential text, click Issue Credential.",
-  "Show the transaction signature and the Solscan link.",
-  "Click “Verify as Agency B”. The credential address is already filled in. Click Verify.",
-  "Result: “Valid. Issued by [Agency A pubkey].”",
-  "Back in Agency A · Issuer, click Revoke Credential.",
-  "Click “Verify again” and show: “Invalid. Credential revoked.”",
-  "Say: “This verification worked without Agency B ever contacting Agency A.”",
+const DEMO = [
+  "Connect Phantom (devnet).",
+  "Agency A: enter the credential text and click Issue Credential.",
+  "Show the signature and Solscan link.",
+  "Click “Verify as Agency B →” and verify. Result: Valid.",
+  "Back at Agency A, click Revoke Credential.",
+  "Verify again. Result: Invalid. Credential revoked.",
 ];
 
-export default function StatusPanel() {
+export default function StatusPanel({ go }: { go: (t: "issuer" | "verifier") => void }) {
   const { connection } = useConnection();
   const wallet = useAnchorWallet();
-
   const [balance, setBalance] = useState<number | null>(null);
-  const [deployed, setDeployed] = useState<"checking" | "yes" | "no" | "error">("checking");
-  const [text, setText] = useState(SAMPLE);
-  const [hashHex, setHashHex] = useState("");
-  const [pda, setPda] = useState("");
+  const [live, setLive] = useState<"checking" | "yes" | "no" | "error">("checking");
 
   useEffect(() => {
-    let cancelled = false;
-    setDeployed("checking");
+    let off = false;
+    setLive("checking");
     connection
       .getAccountInfo(PROGRAM_ID)
-      .then((info) => !cancelled && setDeployed(info?.executable ? "yes" : "no"))
-      .catch(() => !cancelled && setDeployed("error"));
-    return () => {
-      cancelled = true;
-    };
+      .then((i) => !off && setLive(i?.executable ? "yes" : "no"))
+      .catch(() => !off && setLive("error"));
+    return () => { off = true; };
   }, [connection]);
 
   useEffect(() => {
-    let cancelled = false;
+    let off = false;
     setBalance(null);
-    if (!wallet) return;
-    connection
-      .getBalance(wallet.publicKey)
-      .then((lamports) => !cancelled && setBalance(lamports / LAMPORTS_PER_SOL))
-      .catch(() => !cancelled && setBalance(null));
-    return () => {
-      cancelled = true;
-    };
+    if (wallet)
+      connection.getBalance(wallet.publicKey).then((l) => !off && setBalance(l / LAMPORTS_PER_SOL)).catch(() => {});
+    return () => { off = true; };
   }, [connection, wallet]);
-
-  useEffect(() => {
-    let cancelled = false;
-    sha256(text).then((h) => {
-      if (cancelled) return;
-      setHashHex(toHex(h));
-      setPda(wallet ? deriveCredentialPda(wallet.publicKey, h).toBase58() : "");
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [text, wallet]);
 
   return (
     <>
-      <section className="card">
-        <h2>Connection</h2>
-        <dl>
-          <dt>Network</dt>
-          <dd>Solana devnet</dd>
-          <dt>RPC</dt>
-          <dd>{HAS_HELIUS ? "Helius devnet" : "Public devnet (set VITE_HELIUS_API_KEY for Helius)"}</dd>
-          <dt>Program</dt>
-          <dd>
-            <a href={solscanAccount(PROGRAM_ID.toBase58())} target="_blank" rel="noreferrer">
-              {PROGRAM_ID.toBase58()}
-            </a>
-          </dd>
-          <dt>Deployed</dt>
-          <dd className={deployed === "yes" ? "ok" : deployed === "checking" ? "" : "bad"}>
-            {deployed === "checking" && "Checking…"}
-            {deployed === "yes" && "Yes, program is live on devnet"}
-            {deployed === "no" && "No. Run `npm run deploy:devnet` in the repo root"}
-            {deployed === "error" && "Could not reach RPC. Check your Helius key"}
-          </dd>
-          <dt>Wallet</dt>
-          <dd>{wallet ? shorten(wallet.publicKey.toBase58(), 6) : "Not connected"}</dd>
-          <dt>Balance</dt>
-          <dd>{wallet ? (balance === null ? "…" : `${balance.toFixed(3)} SOL`) : "—"}</dd>
-        </dl>
-      </section>
+      {live === "no" && (
+        <div className="notice bad-note">
+          The TrustBridge program is not on devnet yet, so Issue and Verify are disabled until it is deployed
+          (run <code>./scripts/deploy-devnet.sh</code>).
+        </div>
+      )}
+      {live === "error" && <div className="notice bad-note">Cannot reach the RPC. Check your Helius key.</div>}
 
-      <section className="card">
-        <h2>60-second demo flow</h2>
-        <ol className="steps">
-          {DEMO_STEPS.map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="card">
-        <h2>Hash &amp; PDA preview</h2>
-        <p className="hint">
-          Only the SHA-256 hash is ever sent on-chain. The credential address is derived from the
-          issuer wallet and the hash.
+      <section className="hero">
+        <h2>Verify a citizen’s credential without calling the issuing agency</h2>
+        <p>
+          Agency A anchors a hash of the credential on Solana. Agency B reads it directly from the chain,
+          so verification works even when Agency A’s systems are offline.
         </p>
-        <textarea value={text} onChange={(e) => setText(e.target.value)} rows={3} />
-        <dl>
-          <dt>SHA-256</dt>
-          <dd className="mono">{hashHex}</dd>
-          <dt>Credential PDA</dt>
-          <dd className="mono">{pda || "Connect a wallet to derive the PDA"}</dd>
-        </dl>
+        <div className="actions">
+          <button className="cta" onClick={() => go("issuer")}>Agency A · Issue a credential</button>
+          <button className="ghost" onClick={() => go("verifier")}>Agency B · Verify a credential</button>
+        </div>
+      </section>
+
+      <div className="stats">
+        <div className="stat"><span>Network</span><b>Solana devnet</b><small>{HAS_HELIUS ? "via Helius RPC" : "public RPC"}</small></div>
+        <div className="stat">
+          <span>Program</span>
+          <b className={live === "yes" ? "ok" : live === "checking" ? "" : "bad"}>
+            {live === "yes" ? "Live" : live === "checking" ? "Checking…" : "Not deployed"}
+          </b>
+          <small><a href={solscanAccount(PROGRAM_ID.toBase58())} target="_blank" rel="noreferrer">{shorten(PROGRAM_ID.toBase58(), 6)}</a></small>
+        </div>
+        <div className="stat"><span>Wallet</span><b>{wallet ? shorten(wallet.publicKey.toBase58(), 5) : "Not connected"}</b><small>Phantom</small></div>
+        <div className="stat"><span>Balance</span><b>{wallet ? (balance === null ? "…" : `${balance.toFixed(3)} SOL`) : "—"}</b><small>devnet</small></div>
+      </div>
+
+      <section className="card">
+        <h2>How it works</h2>
+        <div className="flow">
+          <div className="fstep"><i>1</i><b>Agency A issues</b><p>The credential text is hashed in the browser. Only the hash goes on-chain. No personal data.</p></div>
+          <div className="arrow">→</div>
+          <div className="fstep"><i>2</i><b>Solana records it</b><p>A program account stores the hash, the issuer’s key and a valid/revoked flag.</p></div>
+          <div className="arrow">→</div>
+          <div className="fstep"><i>3</i><b>Agency B verifies</b><p>Reads the record directly and checks the issuer. Agency A is never contacted.</p></div>
+        </div>
+      </section>
+
+      <section className="card">
+        <h2>Demo script</h2>
+        <ol className="steps">{DEMO.map((s) => <li key={s}>{s}</li>)}</ol>
       </section>
     </>
   );
