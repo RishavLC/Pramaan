@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { NETWORK_NAME, PROGRAM_ID, PROGRAM_ID_MISMATCH, RPC_LABEL, shorten, solscanAccount, solscanTx } from "../lib/config";
 import { timeAgo, useActivity } from "../lib/useActivity";
-import type { Tab } from "./Layout";
 
 type Live = "checking" | "yes" | "no" | "error";
 const WINDOW = 25;
@@ -22,7 +21,7 @@ function useProgramStatus(): Live {
   return live;
 }
 
-export default function Dashboard({ go, refreshKey }: { go: (t: Tab) => void; refreshKey: number }) {
+export default function Dashboard({ go, refreshKey }: { go: (path: string) => void; refreshKey: number }) {
   const { publicKey, connected } = useWallet();
   const live = useProgramStatus();
   const { rows, loading, error } = useActivity(WINDOW, refreshKey);
@@ -159,9 +158,11 @@ export default function Dashboard({ go, refreshKey }: { go: (t: Tab) => void; re
         <section className="card">
           <h2>Quick Actions</h2>
           <div className="qa">
-            <button className="primary" onClick={() => go("issuer")}>Issue Credential</button>
-            <button className="primary" onClick={() => go("verifier")}>Verify Credential</button>
-            <button className="secondary" onClick={() => go("history")}>View Audit Log</button>
+            <button className="primary" onClick={() => go("/issue")}>Issue Credential</button>
+            <button className="primary" onClick={() => go("/verify")}>Verify Credential</button>
+            <button className="primary" onClick={() => go("/credentials")}>View Credentials</button>
+            <button className="secondary" onClick={() => go("/agencies")}>View Agencies</button>
+            <button className="secondary" onClick={() => go("/audit")}>View Audit Log</button>
           </div>
         </section>
       </div>

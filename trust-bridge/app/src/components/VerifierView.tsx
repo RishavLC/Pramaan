@@ -13,10 +13,9 @@ type Result =
 
 interface Props {
   prefillPda: string;
-  prefillNonce: number;
 }
 
-export default function VerifierView({ prefillPda, prefillNonce }: Props) {
+export default function VerifierView({ prefillPda }: Props) {
   const program = useProgram(); // read-only: no wallet needed to verify
 
   const [mode, setMode] = useState<"pda" | "text">("pda");
@@ -36,7 +35,7 @@ export default function VerifierView({ prefillPda, prefillNonce }: Props) {
       setResult(null);
       setError("");
     }
-  }, [prefillPda, prefillNonce]);
+  }, [prefillPda]);
 
   async function handleVerify() {
     setError("");

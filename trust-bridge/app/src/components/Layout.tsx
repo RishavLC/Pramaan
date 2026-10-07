@@ -1,35 +1,36 @@
 import { ReactNode, useState } from "react";
 import WalletStatus from "./WalletStatus";
 import { NETWORK_NAME } from "../lib/config";
-
-export type Tab = "overview" | "issuer" | "verifier" | "history";
+import { href } from "../lib/route";
 
 interface NavItem {
-  id?: Tab;
+  path?: string;
   label: string;
 }
 const NAV: { section: string; items: NavItem[] }[] = [
-  { section: "Overview", items: [{ id: "overview", label: "Dashboard" }] },
+  { section: "Overview", items: [{ path: "/", label: "Dashboard" }] },
   {
     section: "Network",
     items: [
-      { label: "Agencies" },
-      { id: "issuer", label: "Issue / Revoke" },
-      { label: "Credentials" },
-      { id: "verifier", label: "Verification" },
+      { path: "/agencies", label: "Agencies" },
+      { path: "/issue", label: "Issue / Revoke" },
+      { path: "/credentials", label: "Credentials" },
+      { path: "/verify", label: "Verification" },
     ],
   },
-  { section: "Governance", items: [{ label: "Revocations" }, { id: "history", label: "Audit Log" }] },
+  { section: "Governance", items: [{ label: "Revocations" }, { path: "/audit", label: "Audit Log" }] },
   { section: "System", items: [{ label: "Settings" }] },
 ];
 
+const sectionOf = (path: string) => path.split("/")[1] ?? "";
+
 interface Props {
-  tab: Tab;
-  onNavigate: (t: Tab) => void;
+  /** First route segment ("" for the dashboard). */
+  active: string;
   children: ReactNode;
 }
 
-export default function Layout({ tab, onNavigate, children }: Props) {
+export default function Layout({ active, children }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -57,18 +58,16 @@ export default function Layout({ tab, onNavigate, children }: Props) {
             <div key={g.section} className="nav-group">
               <div className="nav-title">{g.section}</div>
               {g.items.map((it) =>
-                it.id ? (
-                  <button
+                it.path ? (
+                  <a
                     key={it.label}
-                    className={`nav-item ${tab === it.id ? "active" : ""}`}
-                    aria-current={tab === it.id ? "page" : undefined}
-                    onClick={() => {
-                      onNavigate(it.id!);
-                      setOpen(false);
-                    }}
+                    href={href(it.path)}
+                    className={`nav-item ${active === sectionOf(it.path) ? "active" : ""}`}
+                    aria-current={active === sectionOf(it.path) ? "page" : undefined}
+                    onClick={() => setOpen(false)}
                   >
                     {it.label}
-                  </button>
+                  </a>
                 ) : (
                   <button key={it.label} className="nav-item" disabled title="Planned for a later phase">
                     {it.label} <small>Soon</small>
@@ -82,7 +81,7 @@ export default function Layout({ tab, onNavigate, children }: Props) {
         <div className="content">
           <main className="shell">{children}</main>
           <footer className="foot">
-            Prototype · Demo environment on Solana Devnet · Mock data only · Not an official government system.
+            Prototype · Demo environment on Solana Devnet · Includes clearly labelled demo data · Not an official government system.
           </footer>
         </div>
       </div>

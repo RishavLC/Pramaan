@@ -67,14 +67,20 @@ npm run app:dev                    # http://localhost:5173
 
 - **Dashboard**: network status, live program check, metrics derived from real devnet transactions,
   inter-agency trust flow, privacy-by-design summary, recent activity, quick actions.
+- **Agencies** (`#/agencies`, `#/agencies/:id`): demo agency network with search and filters. Metadata lives in
+  `app/src/data/agencies.ts`. "National Identity Authority — Demo" is bound to the devnet issuer wallet, so its stats
+  are counted from real on-chain records; the other agencies use labelled demo statistics.
+- **Credentials** (`#/credentials`, `#/credentials/:id`): registry of every `CredentialRecord` on devnet
+  (one `getProgramAccounts` call, cached 60 s) plus 5 fictional demo credentials in `app/src/data/demoCredentials.ts`,
+  each tagged On-chain or Demo. Detail pages show PDA, hash, issuer, lifecycle and Solscan links.
 - **Issue / Revoke** (Agency A): issue a credential (signature + Solscan link) and revoke it.
 - **Verification** (Agency B): verify by PDA, or by credential text + issuer. Works with no wallet connected.
 - **Audit Log**: latest program transactions, labelled, with Solscan links.
 
-Other sidebar items (Agencies, Credentials, Revocations, Settings) are disabled placeholders for later phases.
+Other sidebar items (Revocations, Settings) are disabled placeholders for later phases.
 
 Frontend env (`app/.env.local`): `VITE_SOLANA_RPC_URL` (optional, wins), `VITE_HELIUS_API_KEY` (optional),
-`VITE_PROGRAM_ID` (optional check; the IDL is the source of truth). Never put keypairs in these files.
+`VITE_PROGRAM_ID` (optional check; the IDL is the source of truth), `VITE_DEMO_AGENCY_A_PUBKEY` (optional, public key only). Never put keypairs in these files.
 
 ## 60-second demo script
 

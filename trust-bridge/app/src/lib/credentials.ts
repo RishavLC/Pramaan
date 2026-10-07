@@ -33,21 +33,41 @@ export async function issueCredential(
   return { signature, pda, credentialHashHex: toHex(hash) };
 }
 
+interface RawRecord {
+  issuer: PublicKey;
+  credentialHash: number[];
+  isValid: boolean;
+  issuedAt: unknown;
+  revokedAt: unknown;
+}
+
+function toView(pda: PublicKey, rec: RawRecord): CredentialView {
+  return {
+    pda,
+    issuer: rec.issuer,
+    credentialHashHex: toHex(rec.credentialHash),
+    isValid: rec.isValid,
+    issuedAt: Number(rec.issuedAt),
+    revokedAt: Number(rec.revokedAt),
+  };
+}
+
 /** Agency B: read the record straight from the chain. Returns null if no such credential. */
 export async function fetchCredential(
   program: Program<Idl>,
   pda: PublicKey
 ): Promise<CredentialView | null> {
-  const rec: any = await (program.account as any).credentialRecord.fetchNullable(pda);
-  if (!rec) return null;
-  return {
-    pda,
-    issuer: rec.issuer as PublicKey,
-    credentialHashHex: toHex(rec.credentialHash as number[]),
-    isValid: rec.isValid as boolean,
-    issuedAt: Number(rec.issuedAt),
-    revokedAt: Number(rec.revokedAt),
-  };
+  const rec = (await (program.account as any).credentialRecord.fetchNullable(pda)) as RawRecord | null;
+  return rec ? toView(pda, rec) : null;
+}
+
+/** Registry: every CredentialRecord owned by the program (one getProgramAccounts call), newest first. */
+export async function fetchAllCredentials(program: Program<Idl>): Promise<CredentialView[]> {
+  const all = (await (program.account as any).credentialRecord.all()) as {
+    publicKey: PublicKey;
+    account: RawRecord;
+  }[];
+  return all.map((a) => toView(a.publicKey, a.account)).sort((a, b) => b.issuedAt - a.issuedAt);
 }
 
 /** Agency A: revoke. The program rejects any signer other than the original issuer. */
