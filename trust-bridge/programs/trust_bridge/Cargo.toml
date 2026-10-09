@@ -3,6 +3,7 @@ name = "trust_bridge"
 version = "0.1.0"
 description = "TrustBridge: verifiable credential hashes anchored on Solana"
 edition = "2021"
+rust-version = "1.79"
 
 [lib]
 crate-type = ["cdylib", "lib"]

@@ -3,7 +3,10 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { PhantomWalletName } from "@solana/wallet-adapter-phantom";
 import { WalletReadyState } from "@solana/wallet-adapter-base";
 import { NETWORK_NAME, shorten } from "../lib/config";
-import { clearWalletError, reportWalletError, useWalletError } from "../lib/walletErrors";
+import { clearWalletError, logWalletError, reportWalletError, useWalletError } from "../lib/walletErrors";
+
+const WAS_CONNECTED = "tb-wallet-was-connected";
+let restoreTried = false; // module-level so React StrictMode's double effect cannot connect twice
 
 /** Header wallet control driven entirely by real wallet-adapter state (no simulation). */
 export default function WalletStatus() {
@@ -24,8 +27,20 @@ export default function WalletStatus() {
       .finally(() => setWantConnect(false));
   }, [wantConnect, wallet, connected, connecting, connect]);
 
+  // Silent reconnect after a refresh, only if this browser connected before. Errors stay in the console.
+  useEffect(() => {
+    if (restoreTried || connected || wallet?.adapter.name !== PhantomWalletName) return;
+    if (localStorage.getItem(WAS_CONNECTED) !== "1") return;
+    restoreTried = true;
+    connect().catch((e) => {
+      logWalletError(e);
+      localStorage.removeItem(WAS_CONNECTED);
+    });
+  }, [wallet, connected, connect]);
+
   useEffect(() => {
     if (connected) {
+      localStorage.setItem(WAS_CONNECTED, "1");
       clearWalletError();
       setNotInstalled(false);
       setWantConnect(false);
@@ -73,7 +88,7 @@ export default function WalletStatus() {
           <button className="btn-quiet" onClick={copy} aria-label="Copy full wallet address">
             {copied ? "Copied" : "Copy"}
           </button>
-          <button className="btn-quiet" onClick={() => disconnect().catch(reportWalletError)} disabled={disconnecting}>
+          <button className="btn-quiet" onClick={() => { localStorage.removeItem(WAS_CONNECTED); disconnect().catch(logWalletError); }} disabled={disconnecting}>
             {disconnecting ? "…" : "Disconnect"}
           </button>
         </div>

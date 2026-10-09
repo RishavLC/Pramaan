@@ -8,8 +8,14 @@ let current = false;
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((l) => l());
 
-export function reportWalletError(error: unknown) {
+/** Console only. Used for background errors (e.g. silent reconnect) that users should not see. */
+export function logWalletError(error: unknown) {
   console.warn("[wallet]", error); // detail for developers only; never shown to users
+}
+
+/** Log and show the friendly "Unable to connect Phantom" box. Used when the user clicked Connect. */
+export function reportWalletError(error: unknown) {
+  logWalletError(error);
   const name = error instanceof Error ? error.name : "";
   if (/Sign|Send/.test(name)) return;
   current = true;

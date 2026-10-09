@@ -54,7 +54,7 @@ echo "==> 3. Toolchain"
 echo "==> 4. Fresh build (deletes the stale SBPF-v3 .so; keeps the keypair)"
 rm -f "$SO"
 rm -rf target/sbpf-solana-solana target/sbf-solana-solana target/release
-anchor build -- --tools-version "$TOOLS"
+anchor build --no-idl -- --tools-version "$TOOLS" ${BUILD_ARGS:-}
 
 echo "==> 5. Gate: is the .so the format CLI 2.1.0 can deploy?"
 [ -f "$SO" ] || fail "build produced no $SO"
