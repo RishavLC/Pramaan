@@ -29,7 +29,7 @@ export default function Agencies() {
         title="Agency Network"
         subtitle="Connected institutions participating in the TrustBridge credential verification network."
       >
-        <EnvTags demoLabel="DEMO NETWORK" />
+        <EnvTags demoLabel="PROTOTYPE NETWORK" />
       </PageHeader>
 
       <div className="toolbar">
@@ -63,7 +63,7 @@ export default function Agencies() {
               <article key={a.id} className="card agency-card">
                 <div className="agency-top">
                   <AgencyIcon icon={a.icon} />
-                  <span className="tag">Demo Organization</span>
+                  <span className="tag">Sample organization</span>
                 </div>
                 <h3>{a.name}</h3>
                 <p className="hint">{a.type}</p>
@@ -74,7 +74,7 @@ export default function Agencies() {
                   <dt>Credentials Revoked</dt><dd>{st.revoked}</dd>
                   <dt>Last Activity</dt><dd>{fmtDateTime(st.lastActivity)}</dd>
                 </dl>
-                <p className="small">{st.source === "onchain" ? "On-chain statistics" : "Demo statistics"}</p>
+                <p className="small">{st.source === "onchain" ? "On-chain statistics" : "Sample statistics"}</p>
                 <div className="small">Public Key</div>
                 <KeyValue value={a.publicKey} />
                 <a className="btn-link" href={href(`/agencies/${a.id}`)}>View Agency</a>
@@ -83,7 +83,7 @@ export default function Agencies() {
           })}
         </div>
       )}
-      <p className="hint">Status is part of the demo configuration. TrustBridge is not monitoring real institutions.</p>
+      <p className="hint">Organizations, status and statistics other than Agency A are illustrative samples. TrustBridge does not monitor real institutions.</p>
     </>
   );
 }

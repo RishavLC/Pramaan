@@ -7,7 +7,7 @@ import { fmtTime, useProgram } from "../lib/useProgram";
 import { useProgramStatus } from "../lib/useProgramStatus";
 import { EnvTags, KeyValue, PageHeader, StatusBadge } from "../components/ui";
 
-const SAMPLE = "Residential address credential: Ward 10, Kathmandu (fictional demo data)";
+const SAMPLE = "Residential address credential: Ward 10, Kathmandu (sample data)";
 const newRunId = () => Math.random().toString(36).slice(2, 8);
 
 interface Flow {
@@ -47,15 +47,15 @@ export default function DemoFlow({ onChanged }: { onChanged: () => void }) {
     mode === "live"
       ? ""
       : chooseSim
-        ? "You chose simulation."
+        ? "You chose offline mode."
         : !wallet
           ? "Phantom is not connected."
           : status === "checking"
             ? "Checking the program on Devnet…"
             : "The TrustBridge program is not deployed on Devnet.";
 
-  // The exact string that gets hashed. The run id makes every demo run produce a fresh credential.
-  const credentialText = `${text.trim()} | demo-run:${runId}`;
+  // The exact string that gets hashed. The run id makes every run produce a fresh credential.
+  const credentialText = `${text.trim()} | run:${runId}`;
 
   async function guard<T>(fn: () => Promise<T>): Promise<T | undefined> {
     setBusy(true);
@@ -121,7 +121,7 @@ export default function DemoFlow({ onChanged }: { onChanged: () => void }) {
 
   return (
     <>
-      <PageHeader title="Demo Flow" subtitle="Issue → Verify → Revoke → Verify again, in four steps.">
+      <PageHeader title="Guided Walkthrough" subtitle="Issue → Verify → Revoke → Verify again, in four steps.">
         <EnvTags />
       </PageHeader>
 
@@ -132,13 +132,13 @@ export default function DemoFlow({ onChanged }: { onChanged: () => void }) {
           </>
         ) : (
           <>
-            <strong>Simulation mode.</strong> {reason} The same four steps run locally in your browser, using the same
+            <strong>Offline mode.</strong> {reason} The same four steps run locally in your browser, using the same
             SHA-256 hashing. <strong>Nothing is written to any blockchain.</strong>
           </>
         )}
         {canLive && (
           <label className="sim-toggle">
-            <input type="checkbox" checked={chooseSim} onChange={(e) => setChooseSim(e.target.checked)} /> Use simulation instead
+            <input type="checkbox" checked={chooseSim} onChange={(e) => setChooseSim(e.target.checked)} /> Use offline mode instead
           </label>
         )}
       </div>
@@ -148,7 +148,7 @@ export default function DemoFlow({ onChanged }: { onChanged: () => void }) {
           <strong>{error}</strong>
           {mode === "live" && (
             <div className="actions">
-              <button className="secondary" onClick={() => setChooseSim(true)}>Continue in simulation instead</button>
+              <button className="secondary" onClick={() => setChooseSim(true)}>Continue in offline mode instead</button>
               {/already issued|already in use/i.test(error) && <button className="secondary" onClick={newRun}>Start a new run</button>}
             </div>
           )}
@@ -168,7 +168,7 @@ export default function DemoFlow({ onChanged }: { onChanged: () => void }) {
           The text is hashed with SHA-256 in your browser. Only the hash and the issuer are recorded. The text itself is never sent anywhere.
         </p>
         <textarea rows={2} value={text} onChange={(e) => setText(e.target.value)} disabled={locked || busy} />
-        <p className="small">Issuer: <span className="mono">{engine.issuerLabel}</span> · hashed text ends with <span className="mono">demo-run:{runId}</span></p>
+        <p className="small">Issuer: <span className="mono">{engine.issuerLabel}</span> · hashed text ends with <span className="mono">run:{runId}</span></p>
         <div className="actions">
           <button className="primary" onClick={doIssue} disabled={busy || locked || !text.trim()}>Issue Credential</button>
         </div>
@@ -209,7 +209,7 @@ export default function DemoFlow({ onChanged }: { onChanged: () => void }) {
             <li>Agency B verified a credential without contacting Agency A</li>
             <li>Only a hash and the issuer were recorded, so no personal data was shared</li>
             <li>Revocation by the issuer was visible to Agency B immediately</li>
-            {mode === "sim" && <li>This run was a local simulation. Connect Phantom with the program deployed to run it on Devnet.</li>}
+            {mode === "sim" && <li>This run used offline mode. Connect Phantom with the program deployed to run it on Devnet.</li>}
           </ul>
         </section>
       )}
@@ -223,7 +223,7 @@ function RecordCard({ rec, heading, live, revoked }: { rec: DemoRecord; heading:
       <strong>{heading}.</strong>
       <dl>
         <dt>Credential hash</dt><dd><KeyValue value={rec.hashHex} chars={8} /></dd>
-        <dt>{live ? "Credential PDA" : "Simulated ID"}</dt>
+        <dt>{live ? "Credential PDA" : "Local ID"}</dt>
         <dd>{live ? <KeyValue value={rec.ref} /> : <span className="mono">{rec.ref}</span>}</dd>
         {rec.signature && (
           <>

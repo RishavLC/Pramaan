@@ -13,7 +13,7 @@ export interface TimelineEvent {
 
 /** UI model. Blockchain data (CredentialView) is mapped into this; it is never sent back to the chain. */
 export interface RegistryEntry {
-  id: string; // route id: PDA for on-chain, TB-DEMO-xxx for demo
+  id: string; // route id: PDA for on-chain, TB-SAMPLE-xxx for sample
   displayId: string;
   source: CredentialSource;
   type: string;
@@ -75,7 +75,7 @@ export function demoEntries(): RegistryEntry[] {
       source: "demo",
       type: d.type,
       issuerKey: agency?.publicKey ?? "",
-      issuerName: agency?.name ?? "Demo issuer",
+      issuerName: agency?.name ?? "Sample issuer",
       agencyId: d.agencyId,
       status: d.revokedAt ? "revoked" : "valid",
       hashHex: d.hashHex,

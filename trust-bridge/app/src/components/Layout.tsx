@@ -8,7 +8,7 @@ interface NavItem {
   label: string;
 }
 const NAV: { section: string; items: NavItem[] }[] = [
-  { section: "Overview", items: [{ path: "/", label: "Dashboard" }, { path: "/demo", label: "Demo Flow" }] },
+  { section: "Overview", items: [{ path: "/", label: "Dashboard" }, { path: "/walkthrough", label: "Walkthrough" }] },
   {
     section: "Network",
     items: [
@@ -81,7 +81,7 @@ export default function Layout({ active, children }: Props) {
         <div className="content">
           <main className="shell">{children}</main>
           <footer className="foot">
-            Prototype · Demo environment on Solana Devnet · Includes clearly labelled demo data · Not an official government system.
+            Prototype on Solana Devnet · Sample organizations and records are illustrative · Not an official government system.
           </footer>
         </div>
       </div>

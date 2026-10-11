@@ -14,7 +14,7 @@ export default function AgencyDetails({ id }: { id: string }) {
       <div className="card">
         <EmptyState
           title="Agency Not Found"
-          text="This agency is not part of the demo network."
+          text="This agency is not part of this network."
           action={<a className="btn-link" href={href("/agencies")}>Back to Agency Network</a>}
         />
       </div>
@@ -30,7 +30,7 @@ export default function AgencyDetails({ id }: { id: string }) {
       <section className="card detail-head">
         <AgencyIcon icon={agency.icon} />
         <div>
-          <div className="tags"><span className="tag">Demo Organization</span><span className="tag">{NETWORK_NAME}</span></div>
+          <div className="tags"><span className="tag">Sample organization</span><span className="tag">{NETWORK_NAME}</span></div>
           <h2>{agency.name}</h2>
           <p className="hint">{agency.description}</p>
         </div>
@@ -55,7 +55,7 @@ export default function AgencyDetails({ id }: { id: string }) {
           <p className="small">
             {st.source === "onchain"
               ? "Counts come from real credential records signed by this key on Solana Devnet. Verification reads are not recorded on-chain."
-              : "Demo statistics, derived from the fictional demo credentials. Not blockchain data."}
+              : "Sample statistics, derived from the sample records. Not blockchain data."}
           </p>
         </section>
 

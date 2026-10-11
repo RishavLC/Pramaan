@@ -67,7 +67,7 @@ export function liveEngine(program: Program<Idl>, issuer: PublicKey): DemoEngine
 }
 
 // Simulation: in-memory only. Nothing is written to any blockchain.
-const SIM_ISSUER = "Simulated Agency A";
+const SIM_ISSUER = "Agency A (local)";
 const simStore = new Map<string, DemoRecord>();
 const simRef = (hashHex: string) => `SIM-${hashHex.slice(0, 16)}`;
 

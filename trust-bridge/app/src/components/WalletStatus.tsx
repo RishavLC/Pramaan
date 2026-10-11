@@ -8,7 +8,7 @@ import { clearWalletError, logWalletError, reportWalletError, useWalletError } f
 const WAS_CONNECTED = "tb-wallet-was-connected";
 let restoreTried = false; // module-level so React StrictMode's double effect cannot connect twice
 
-/** Header wallet control driven entirely by real wallet-adapter state (no simulation). */
+/** Header wallet control driven entirely by real wallet-adapter state (no mock state). */
 export default function WalletStatus() {
   const { wallet, publicKey, connected, connecting, disconnecting, select, connect, disconnect } = useWallet();
   const errorDetail = useWalletError();
@@ -125,7 +125,7 @@ export default function WalletStatus() {
             <li>Phantom is set to Devnet</li>
           </ul>
           <span>
-            You can still try the <a href="#/demo">Demo Flow</a> without a wallet (simulation mode).
+            You can still run the <a href="#/walkthrough">Walkthrough</a> without a wallet (offline mode).
           </span>
           {errorDetail && (
             <details>

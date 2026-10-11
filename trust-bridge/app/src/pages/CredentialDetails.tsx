@@ -51,7 +51,7 @@ export default function CredentialDetails({ id }: { id: string }) {
         <h2 className="mono-title">{entry.displayId}</h2>
         <StatusBadge status={entry.status} />
         <p className="cred-type">{typeLabel}</p>
-        {demo && <p className="small">Demo credential. This record is fictional and is not on Solana.</p>}
+        {demo && <p className="small">Sample record. It is illustrative and is not on Solana.</p>}
       </section>
 
       <div className="two-col">
@@ -75,7 +75,7 @@ export default function CredentialDetails({ id }: { id: string }) {
           <h2>Blockchain Proof</h2>
           {demo ? (
             <>
-              <p className="hint">Demo credential: there is no on-chain record, PDA or transaction.</p>
+              <p className="hint">Sample record: there is no on-chain record, PDA or transaction.</p>
               <dl className="kv">
                 <dt>Network</dt><dd>{NETWORK_NAME}</dd>
                 <dt>Credential Hash</dt><dd><KeyValue value={entry.hashHex} chars={8} /></dd>
@@ -114,7 +114,7 @@ export default function CredentialDetails({ id }: { id: string }) {
             <li>
               <div className="vnode">
                 Personal Credential Data
-                <small>{demo && entry.sampleText ? `Sample (fictional): ${entry.sampleText}` : "Kept off-chain. Not visible to TrustBridge."}</small>
+                <small>{demo && entry.sampleText ? `Sample (illustrative): ${entry.sampleText}` : "Kept off-chain. Not visible to TrustBridge."}</small>
               </div>
               <div className="vedge" aria-hidden><span>│</span><em>SHA-256</em><span>▼</span></div>
             </li>
@@ -122,7 +122,7 @@ export default function CredentialDetails({ id }: { id: string }) {
               <div className="vnode core mono">{entry.hashHex.slice(0, 6)}…{entry.hashHex.slice(-4)}</div>
               <div className="vedge" aria-hidden><span>│</span><em>{demo ? "would be anchored as" : "anchored as"}</em><span>▼</span></div>
             </li>
-            <li><div className="vnode">Solana Credential Record{demo ? " (demo: not created)" : ""}</div></li>
+            <li><div className="vnode">Solana Credential Record{demo ? " (sample: not created)" : ""}</div></li>
           </ol>
         </section>
 
@@ -146,7 +146,7 @@ export default function CredentialDetails({ id }: { id: string }) {
             <li key={i} className={ev.kind}>
               <span className="tl-dot" aria-hidden />
               <div>
-                <b>{ev.kind.toUpperCase()}</b>{ev.demo && <span className="tag">demo event</span>}
+                <b>{ev.kind.toUpperCase()}</b>{ev.demo && <span className="tag">sample event</span>}
                 <div className="small">{fmtDateTime(ev.at)}</div>
                 {ev.sig && <a className="small" href={solscanTx(ev.sig)} target="_blank" rel="noreferrer">Transaction on Solscan ↗</a>}
               </div>
@@ -163,7 +163,7 @@ export default function CredentialDetails({ id }: { id: string }) {
             <button
               className="primary"
               disabled={!entry.pda}
-              title={entry.pda ? undefined : "Demo credentials have no on-chain record to verify"}
+              title={entry.pda ? undefined : "Sample records have no on-chain record to verify"}
               onClick={() => entry.pda && navigate(`/verify?pda=${entry.pda}`)}
             >
               Verify Credential

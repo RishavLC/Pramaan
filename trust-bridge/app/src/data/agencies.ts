@@ -17,7 +17,7 @@ export interface Agency {
 }
 
 /**
- * Public key of the demo "Agency A". It defaults to the project's devnet issuer wallet so credentials you
+ * Public key of "Agency A". It defaults to the project's devnet issuer wallet so credentials you
  * issue from that wallet appear under this agency with real numbers. Override with VITE_DEMO_AGENCY_A_PUBKEY.
  * Public keys only: never put a secret key here or in any VITE_ variable.
  */
@@ -36,9 +36,9 @@ export const AGENCY_A_KEY: string = (() => {
 export const AGENCIES: Agency[] = [
   {
     id: "national-identity",
-    name: "National Identity Authority — Demo",
+    name: "National Identity Authority",
     type: "Identity Services",
-    description: "Demo identity issuer. Bound to the project's devnet issuer wallet, so credentials issued from it are counted on-chain.",
+    description: "Identity issuer. Linked to the project's Devnet issuer wallet, so credentials issued from it are counted on-chain.",
     publicKey: AGENCY_A_KEY,
     status: "active",
     isDemo: true,
@@ -47,9 +47,9 @@ export const AGENCIES: Agency[] = [
   },
   {
     id: "municipal",
-    name: "Kathmandu Metropolitan Office — Demo",
+    name: "Kathmandu Metropolitan Office",
     type: "Local Government",
-    description: "Demo municipal office issuing residence and address credentials.",
+    description: "Municipal office issuing residence and address credentials.",
     publicKey: "8WYBAzTniXVdxPKaoRMXFqNatnVe4d5389B5HNM4tigh",
     status: "active",
     isDemo: true,
@@ -58,9 +58,9 @@ export const AGENCIES: Agency[] = [
   },
   {
     id: "transport",
-    name: "Department of Transport — Demo",
+    name: "Department of Transport",
     type: "Transport Services",
-    description: "Demo transport department issuing vehicle and licence credentials.",
+    description: "Transport department issuing vehicle and licence credentials.",
     publicKey: "DYRZLWxjgVWkZ6GseyMbi6t4tMKmroTvV56sEpmjt1d6",
     status: "active",
     isDemo: true,
@@ -69,9 +69,9 @@ export const AGENCIES: Agency[] = [
   },
   {
     id: "social",
-    name: "Social Security Authority — Demo",
+    name: "Social Security Authority",
     type: "Social Protection",
-    description: "Demo social protection authority issuing enrollment credentials.",
+    description: "Social protection authority issuing enrollment credentials.",
     publicKey: "Gz81v4jWoKQULkQTK7jnBD5785gkbEktTYeVmDZrJmPf",
     status: "active",
     isDemo: true,
@@ -80,9 +80,9 @@ export const AGENCIES: Agency[] = [
   },
   {
     id: "education",
-    name: "Education Records Office — Demo",
+    name: "Education Records Office",
     type: "Education Services",
-    description: "Demo education records office issuing certificate credentials. Marked offline in the demo configuration.",
+    description: "Education records office issuing certificate credentials. Shown as offline in the sample configuration.",
     publicKey: "7pZdXVxnCwBoLJ3gzCZUnCJE49iwCYhmwtQVFjtNs89R",
     status: "offline",
     isDemo: true,

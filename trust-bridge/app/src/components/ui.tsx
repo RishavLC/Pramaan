@@ -60,11 +60,11 @@ export function SourceBadge({ source }: { source: CredentialSource }) {
   return source === "onchain" ? (
     <span className="src-badge onchain">On-chain</span>
   ) : (
-    <span className="src-badge demo">Demo</span>
+    <span className="src-badge demo">Sample</span>
   );
 }
 
-export function EnvTags({ demoLabel = "Demo Environment" }: { demoLabel?: string }) {
+export function EnvTags({ demoLabel = "Prototype" }: { demoLabel?: string }) {
   return (
     <div className="tags">
       <span className="tag">{demoLabel}</span>

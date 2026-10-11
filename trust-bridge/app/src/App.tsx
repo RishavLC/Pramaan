@@ -28,7 +28,7 @@ export default function App() {
     case "":
       page = <Dashboard go={navigate} refreshKey={refreshKey} />;
       break;
-    case "demo":
+    case "walkthrough":
       page = <DemoFlow onChanged={onChanged} />;
       break;
     case "issue":

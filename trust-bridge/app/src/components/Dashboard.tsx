@@ -35,13 +35,13 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
       )}
 
       <section className="hero">
-        <div className="tags"><span className="tag">Demo Environment</span><span className="tag">{NETWORK_NAME}</span><span className="tag">Prototype</span></div>
+        <div className="tags"><span className="tag">{NETWORK_NAME}</span><span className="tag">Prototype</span></div>
         <h2>Digital Trust Infrastructure</h2>
         <p>
           A shared verification layer that enables government agencies to issue and verify trusted digital
           credentials without exchanging personal data between systems.
         </p>
-        <div className="actions"><button className="primary" onClick={() => go("/demo")}>▶ Start Demo Flow</button></div>
+        <div className="actions"><button className="primary" onClick={() => go("/walkthrough")}>▶ Start Walkthrough</button></div>
         <div className={`status-line ${statusClass}`}>
           <span className={`dot ${live === "yes" ? "ok-dot" : live === "checking" ? "idle-dot" : "bad-dot"}`} aria-hidden />
           {live === "yes" ? "TrustBridge Network Operational (devnet program reachable)" : `TrustBridge Network: ${statusText}`}
@@ -60,7 +60,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
         <p className="hint">How a credential moves between two agencies without any personal data being shared.</p>
         <div className="trust-flow">
           <div className="node">
-            <span className="node-tag">Demo Agency A</span>
+            <span className="node-tag">Agency A</span>
             <b>Credential Issuer</b>
             <p>Hashes the credential locally and signs with its wallet.</p>
           </div>
@@ -77,7 +77,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
           </div>
           <div className="link"><span>Read</span><i aria-hidden>→</i></div>
           <div className="node">
-            <span className="node-tag">Demo Agency B</span>
+            <span className="node-tag">Agency B</span>
             <b>Credential Verifier</b>
             <p>Reads the proof from the chain. Agency A is never contacted.</p>
           </div>
@@ -143,7 +143,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
         <section className="card">
           <h2>Quick Actions</h2>
           <div className="qa">
-            <button className="primary" onClick={() => go("/demo")}>Start Demo Flow</button>
+            <button className="primary" onClick={() => go("/walkthrough")}>Start Walkthrough</button>
             <button className="primary" onClick={() => go("/issue")}>Issue Credential</button>
             <button className="primary" onClick={() => go("/verify")}>Verify Credential</button>
             <button className="primary" onClick={() => go("/credentials")}>View Credentials</button>

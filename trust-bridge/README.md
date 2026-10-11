@@ -67,7 +67,7 @@ npm run app:dev                    # http://localhost:5173
 
 - **Dashboard**: network status, live program check, metrics derived from real devnet transactions,
   inter-agency trust flow, privacy-by-design summary, recent activity, quick actions.
-- **Demo Flow** (`#/demo`): guided Issue → Verify → Revoke → Verify. Runs live on Devnet when the program is deployed
+- **Walkthrough** (`#/demo`): guided Issue → Verify → Revoke → Verify. Runs live on Devnet when the program is deployed
   and Phantom is connected; otherwise it runs a clearly labelled local simulation (nothing on-chain).
 - **Agencies** (`#/agencies`, `#/agencies/:id`): demo agency network with search and filters. Metadata lives in
   `app/src/data/agencies.ts`. "National Identity Authority — Demo" is bound to the devnet issuer wallet, so its stats

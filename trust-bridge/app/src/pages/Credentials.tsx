@@ -39,7 +39,7 @@ export default function Credentials() {
 
       {error && (
         <div className="notice bad-note">
-          Could not load on-chain credentials right now (RPC or program unavailable). Showing demo credentials only.
+          Could not load on-chain credentials right now (RPC or program unavailable). Showing sample records only.
         </div>
       )}
 
@@ -61,15 +61,15 @@ export default function Credentials() {
           {issuers.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
         <select value={source} onChange={(e) => setSource(e.target.value as typeof source)} aria-label="Filter by source">
-          <option value="all">On-chain + Demo</option>
+          <option value="all">On-chain + Sample</option>
           <option value="onchain">On-chain only</option>
-          <option value="demo">Demo only</option>
+          <option value="demo">Sample only</option>
         </select>
         <button className="secondary toolbar-btn" onClick={refresh} disabled={loading}>{loading ? "Loading…" : "Refresh"}</button>
       </div>
 
       <p className="hint">
-        {loading ? "Loading credentials from Solana Devnet…" : `${onchainCount} on-chain record${onchainCount === 1 ? "" : "s"} found on Devnet, plus ${entries.length - onchainCount} fictional demo credentials.`}
+        {loading ? "Loading credentials from Solana Devnet…" : `${onchainCount} on-chain record${onchainCount === 1 ? "" : "s"} found on Devnet, plus ${entries.length - onchainCount} sample records.`}
       </p>
 
       <section className="card table-card">
