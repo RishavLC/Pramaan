@@ -1,25 +1,9 @@
-import { useEffect, useState } from "react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { NETWORK_NAME, PROGRAM_ID, PROGRAM_ID_MISMATCH, RPC_LABEL, shorten, solscanAccount, solscanTx } from "../lib/config";
 import { timeAgo, useActivity } from "../lib/useActivity";
+import { useProgramStatus } from "../lib/useProgramStatus";
 
-type Live = "checking" | "yes" | "no" | "error";
 const WINDOW = 25;
-
-function useProgramStatus(): Live {
-  const { connection } = useConnection();
-  const [live, setLive] = useState<Live>("checking");
-  useEffect(() => {
-    let off = false;
-    setLive("checking");
-    connection
-      .getAccountInfo(PROGRAM_ID)
-      .then((i) => !off && setLive(i?.executable ? "yes" : "no"))
-      .catch(() => !off && setLive("error"));
-    return () => { off = true; };
-  }, [connection]);
-  return live;
-}
 
 export default function Dashboard({ go, refreshKey }: { go: (path: string) => void; refreshKey: number }) {
   const { publicKey, connected } = useWallet();
@@ -57,6 +41,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
           A shared verification layer that enables government agencies to issue and verify trusted digital
           credentials without exchanging personal data between systems.
         </p>
+        <div className="actions"><button className="primary" onClick={() => go("/demo")}>▶ Start Demo Flow</button></div>
         <div className={`status-line ${statusClass}`}>
           <span className={`dot ${live === "yes" ? "ok-dot" : live === "checking" ? "idle-dot" : "bad-dot"}`} aria-hidden />
           {live === "yes" ? "TrustBridge Network Operational (devnet program reachable)" : `TrustBridge Network: ${statusText}`}
@@ -158,6 +143,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
         <section className="card">
           <h2>Quick Actions</h2>
           <div className="qa">
+            <button className="primary" onClick={() => go("/demo")}>Start Demo Flow</button>
             <button className="primary" onClick={() => go("/issue")}>Issue Credential</button>
             <button className="primary" onClick={() => go("/verify")}>Verify Credential</button>
             <button className="primary" onClick={() => go("/credentials")}>View Credentials</button>

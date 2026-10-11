@@ -5,6 +5,7 @@ import VerifierView from "./components/VerifierView";
 import HistoryView from "./components/HistoryView";
 import Agencies from "./pages/Agencies";
 import AgencyDetails from "./pages/AgencyDetails";
+import DemoFlow from "./pages/DemoFlow";
 import Credentials from "./pages/Credentials";
 import CredentialDetails from "./pages/CredentialDetails";
 import { EmptyState } from "./components/ui";
@@ -26,6 +27,9 @@ export default function App() {
   switch (first) {
     case "":
       page = <Dashboard go={navigate} refreshKey={refreshKey} />;
+      break;
+    case "demo":
+      page = <DemoFlow onChanged={onChanged} />;
       break;
     case "issue":
       page = <IssuerView onChanged={onChanged} onVerify={(pda) => navigate(`/verify?pda=${pda}`)} />;

@@ -11,7 +11,8 @@ let restoreTried = false; // module-level so React StrictMode's double effect ca
 /** Header wallet control driven entirely by real wallet-adapter state (no simulation). */
 export default function WalletStatus() {
   const { wallet, publicKey, connected, connecting, disconnecting, select, connect, disconnect } = useWallet();
-  const hasError = useWalletError();
+  const errorDetail = useWalletError();
+  const hasError = errorDetail !== null;
   const [wantConnect, setWantConnect] = useState(false);
   const [copied, setCopied] = useState(false);
   const [notInstalled, setNotInstalled] = useState(false);
@@ -22,9 +23,23 @@ export default function WalletStatus() {
     if (!wantConnect || connected || connecting) return;
     if (wallet?.adapter.name !== PhantomWalletName || attempted.current) return;
     attempted.current = true;
-    connect()
-      .catch(reportWalletError)
-      .finally(() => setWantConnect(false));
+    (async () => {
+      try {
+        await connect();
+      } catch (first) {
+        // Phantom sometimes fails the very first request with a generic error; retry once unless the user declined.
+        if (/reject|declin|denied|cancel/i.test(String((first as Error)?.message))) return reportWalletError(first);
+        logWalletError(first);
+        await new Promise((r) => setTimeout(r, 900));
+        try {
+          await connect();
+        } catch (second) {
+          reportWalletError(second);
+        }
+      } finally {
+        setWantConnect(false);
+      }
+    })();
   }, [wantConnect, wallet, connected, connecting, connect]);
 
   // Silent reconnect after a refresh, only if this browser connected before. Errors stay in the console.
@@ -109,6 +124,15 @@ export default function WalletStatus() {
             <li>Phantom is unlocked</li>
             <li>Phantom is set to Devnet</li>
           </ul>
+          <span>
+            You can still try the <a href="#/demo">Demo Flow</a> without a wallet (simulation mode).
+          </span>
+          {errorDetail && (
+            <details>
+              <summary>Technical details</summary>
+              <code className="small-wrap">{errorDetail}</code>
+            </details>
+          )}
           <button className="btn-quiet" onClick={() => { clearWalletError(); setNotInstalled(false); }}>Dismiss</button>
         </div>
       )}

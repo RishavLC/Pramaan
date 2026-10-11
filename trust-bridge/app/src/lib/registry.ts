@@ -59,10 +59,16 @@ export function demoEntries(): RegistryEntry[] {
   return DEMO_CREDENTIALS.map((d): RegistryEntry => {
     const agency = AGENCIES.find((a) => a.id === d.agencyId);
     const events: TimelineEvent[] = [
-      { kind: "issued", at: d.issuedAt, demo: true },
-      ...d.verifiedAt.map((at) => ({ kind: "verified" as const, at, demo: true })),
-      ...(d.revokedAt ? [{ kind: "revoked" as const, at: d.revokedAt, demo: true }] : []),
-    ].sort((a, b) => a.at - b.at);
+  { kind: "issued" as const, at: d.issuedAt, demo: true },
+  ...d.verifiedAt.map((at) => ({
+    kind: "verified" as const,
+    at,
+    demo: true,
+  })),
+  ...(d.revokedAt
+    ? [{ kind: "revoked" as const, at: d.revokedAt, demo: true }]
+    : []),
+].sort((a, b) => a.at - b.at);
     return {
       id: d.id,
       displayId: d.id,

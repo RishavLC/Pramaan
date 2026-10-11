@@ -155,3 +155,11 @@ table.reg tbody tr{cursor:pointer} table.reg tbody tr:hover{background:#f7f9fc} 
   table.reg td::before{content:attr(data-label);color:var(--muted);font-size:12px;text-transform:uppercase;text-align:left}
   .detail-head{flex-direction:column}
 }
+
+/* ---- demo flow ---- */
+.ok-note{background:#e8f5ec;border-color:#9ad0a8;color:#14532d}
+.warn-note{background:#fff6d6;border-color:#e6cf7a;color:#5c4500}
+.sim-toggle{display:block;margin-top:6px;font-size:13px} .sim-toggle input{width:auto;margin:0 6px 0 0}
+.demo-bar{margin-bottom:12px}
+.step h2{display:flex;align-items:center;gap:10px}
+.step-n{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}

@@ -8,7 +8,7 @@ interface NavItem {
   label: string;
 }
 const NAV: { section: string; items: NavItem[] }[] = [
-  { section: "Overview", items: [{ path: "/", label: "Dashboard" }] },
+  { section: "Overview", items: [{ path: "/", label: "Dashboard" }, { path: "/demo", label: "Demo Flow" }] },
   {
     section: "Network",
     items: [
