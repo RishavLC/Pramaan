@@ -1,4 +1,3 @@
-::: {align="center"}
 # TrustBridge
 
 ### A verifiable-credential trust layer for inter-agency verification
