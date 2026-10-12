@@ -121,11 +121,11 @@ export function AgencyIcon({ icon }: { icon: AgencyIconKey }) {
   );
 }
 
-/** Vertical Agency → TrustBridge → Solana → Other agencies diagram, shared by agency detail pages. */
+/** Vertical Agency → Pramaan → Solana → Other agencies diagram, shared by agency detail pages. */
 export function TrustRelationship({ agencyName }: { agencyName: string }) {
   const steps: [string, string][] = [
     [agencyName, "issues"],
-    ["TrustBridge", "anchors proof"],
+    ["Pramaan", "anchors proof"],
     ["Solana (Devnet)", "verifies"],
     ["Other agencies", ""],
   ];

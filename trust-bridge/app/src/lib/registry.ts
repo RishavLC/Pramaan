@@ -13,7 +13,7 @@ export interface TimelineEvent {
 
 /** UI model. Blockchain data (CredentialView) is mapped into this; it is never sent back to the chain. */
 export interface RegistryEntry {
-  id: string; // route id: PDA for on-chain, TB-SAMPLE-xxx for sample
+  id: string; // route id: PDA for on-chain, PR-SAMPLE-xxx for sample
   displayId: string;
   source: CredentialSource;
   type: string;
@@ -39,7 +39,7 @@ export function fromChain(v: CredentialView): RegistryEntry {
   if (revokedAt) events.push({ kind: "revoked", at: revokedAt, demo: false });
   return {
     id: v.pda.toBase58(),
-    displayId: `TB-${v.credentialHashHex.slice(0, 8).toUpperCase()}`,
+    displayId: `PR-${v.credentialHashHex.slice(0, 8).toUpperCase()}`,
     source: "onchain",
     type: UNKNOWN_TYPE, // the program stores only a hash, never the credential type
     issuerKey,
@@ -59,16 +59,10 @@ export function demoEntries(): RegistryEntry[] {
   return DEMO_CREDENTIALS.map((d): RegistryEntry => {
     const agency = AGENCIES.find((a) => a.id === d.agencyId);
     const events: TimelineEvent[] = [
-  { kind: "issued" as const, at: d.issuedAt, demo: true },
-  ...d.verifiedAt.map((at) => ({
-    kind: "verified" as const,
-    at,
-    demo: true,
-  })),
-  ...(d.revokedAt
-    ? [{ kind: "revoked" as const, at: d.revokedAt, demo: true }]
-    : []),
-].sort((a, b) => a.at - b.at);
+      { kind: "issued", at: d.issuedAt, demo: true },
+      ...d.verifiedAt.map((at) => ({ kind: "verified" as const, at, demo: true })),
+      ...(d.revokedAt ? [{ kind: "revoked" as const, at: d.revokedAt, demo: true }] : []),
+    ].sort((a, b) => a.at - b.at);
     return {
       id: d.id,
       displayId: d.id,

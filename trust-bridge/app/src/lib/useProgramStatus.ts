@@ -4,7 +4,7 @@ import { PROGRAM_ID } from "./config";
 
 export type ProgramStatus = "checking" | "yes" | "no" | "error";
 
-/** Is the TrustBridge program deployed (executable) on the connected cluster? */
+/** Is the Pramaan program deployed (executable) on the connected cluster? */
 export function useProgramStatus(): ProgramStatus {
   const { connection } = useConnection();
   const [live, setLive] = useState<ProgramStatus>("checking");

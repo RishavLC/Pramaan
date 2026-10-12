@@ -33,7 +33,7 @@ export default function Credentials() {
 
   return (
     <>
-      <PageHeader title="Credential Registry" subtitle="Verifiable credentials anchored through TrustBridge.">
+      <PageHeader title="Credential Registry" subtitle="Verifiable credentials anchored through Pramaan.">
         <EnvTags />
       </PageHeader>
 

@@ -27,7 +27,7 @@ export default function Agencies() {
     <>
       <PageHeader
         title="Agency Network"
-        subtitle="Connected institutions participating in the TrustBridge credential verification network."
+        subtitle="Connected institutions participating in the Pramaan credential verification network."
       >
         <EnvTags demoLabel="PROTOTYPE NETWORK" />
       </PageHeader>
@@ -83,7 +83,7 @@ export default function Agencies() {
           })}
         </div>
       )}
-      <p className="hint">Organizations, status and statistics other than Agency A are illustrative samples. TrustBridge does not monitor real institutions.</p>
+      <p className="hint">Organizations, status and statistics other than Agency A are illustrative samples. Pramaan does not monitor real institutions.</p>
     </>
   );
 }

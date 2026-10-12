@@ -40,9 +40,9 @@ export default function Layout({ active, children }: Props) {
           ☰
         </button>
         <div className="brand">
-          <div className="seal" aria-hidden>TB</div>
+          <div className="seal" aria-hidden>P</div>
           <div>
-            <h1>TrustBridge</h1>
+            <h1>Pramaan</h1>
             <p>Nepal Digital Trust Layer</p>
           </div>
         </div>

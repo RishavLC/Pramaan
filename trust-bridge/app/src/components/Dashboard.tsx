@@ -23,7 +23,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
     <>
       {live === "no" && (
         <div className="notice bad-note">
-          The TrustBridge program is not on devnet yet, so Issue and Verify will fail until it is deployed
+          The Pramaan program is not on devnet yet, so Issue and Verify will fail until it is deployed
           (run <code>./scripts/deploy-devnet.sh</code>).
         </div>
       )}
@@ -44,7 +44,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
         <div className="actions"><button className="primary" onClick={() => go("/walkthrough")}>▶ Start Walkthrough</button></div>
         <div className={`status-line ${statusClass}`}>
           <span className={`dot ${live === "yes" ? "ok-dot" : live === "checking" ? "idle-dot" : "bad-dot"}`} aria-hidden />
-          {live === "yes" ? "TrustBridge Network Operational (devnet program reachable)" : `TrustBridge Network: ${statusText}`}
+          {live === "yes" ? "Pramaan Network Operational (devnet program reachable)" : `Pramaan Network: ${statusText}`}
         </div>
       </section>
 
@@ -66,7 +66,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
           </div>
           <div className="link"><span>Issue</span><i aria-hidden>→</i></div>
           <div className="node core">
-            <span className="node-tag">TrustBridge · on Solana</span>
+            <span className="node-tag">Pramaan · on Solana</span>
             <b>Cryptographic Proof</b>
             <ul>
               <li>Credential hash (SHA-256)</li>
@@ -86,7 +86,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
 
       <div className="two-col">
         <section className="card">
-          <h2>TrustBridge Network</h2>
+          <h2>Pramaan Network</h2>
           <dl className="kv">
             <dt>Program</dt>
             <dd><a className="mono" href={solscanAccount(programId)} target="_blank" rel="noreferrer" title={programId}>{shorten(programId, 6)}</a></dd>
@@ -104,7 +104,7 @@ export default function Dashboard({ go, refreshKey }: { go: (path: string) => vo
           <h2>Privacy by Design</h2>
           <p><strong>Personal information stays outside the blockchain.</strong></p>
           <p className="hint">
-            TrustBridge anchors cryptographic proofs rather than storing citizens’ personal data on-chain.
+            Pramaan anchors cryptographic proofs rather than storing citizens’ personal data on-chain.
           </p>
           <ul className="checks">
             <li>Hash-based verification</li>

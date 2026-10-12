@@ -1,10 +1,10 @@
-# TrustBridge
+# Pramaan
 
 A verifiable-credential layer on Solana. One agency issues a credential, another verifies it,
 and the verifier never has to contact the issuer.
 
 **Why:** In Nepal, an address verified by one agency can't be verified by another without manual
-steps. TrustBridge anchors only a credential **hash** on-chain, so verification doesn't depend on
+steps. Pramaan anchors only a credential **hash** on-chain, so verification doesn't depend on
 any single agency's uptime. No personal data goes on-chain. All sample data is mock.
 
 ## How it works
@@ -101,7 +101,7 @@ Frontend env (`app/.env.local`): `VITE_SOLANA_RPC_URL` (optional, wins), `VITE_H
 
 - **0:00-0:20 The problem.** In Nepal, a citizen's address verified by one agency cannot be verified
   by another. Systems exist, but trust between systems does not.
-- **0:20-0:50 The solution.** TrustBridge anchors credential hashes on Solana. Verification does not
+- **0:20-0:50 The solution.** Pramaan anchors credential hashes on Solana. Verification does not
   depend on any single agency staying online.
 - **0:50-1:30 The demo.** Run the 8 steps above.
 - **1:30-2:00 Why you.** You understand the Nepali context, you identified a specific trust gap, and

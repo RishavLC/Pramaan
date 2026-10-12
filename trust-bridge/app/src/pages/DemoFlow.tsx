@@ -52,7 +52,7 @@ export default function DemoFlow({ onChanged }: { onChanged: () => void }) {
           ? "Phantom is not connected."
           : status === "checking"
             ? "Checking the program on Devnet…"
-            : "The TrustBridge program is not deployed on Devnet.";
+            : "The Pramaan program is not deployed on Devnet.";
 
   // The exact string that gets hashed. The run id makes every run produce a fresh credential.
   const credentialText = `${text.trim()} | run:${runId}`;

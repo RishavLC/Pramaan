@@ -26,7 +26,7 @@ export default function CredentialDetails({ id }: { id: string }) {
         <p><StatusBadge status="notfound" /></p>
         <EmptyState
           title="Credential Not Found"
-          text="We could not locate this credential on the TrustBridge network. The credential may not exist or may not be available on the current Devnet environment."
+          text="We could not locate this credential on the Pramaan network. The credential may not exist or may not be available on the current Devnet environment."
           action={<a className="btn-link" href={href("/credentials")}>Back to Credential Registry</a>}
         />
       </section>
@@ -114,7 +114,7 @@ export default function CredentialDetails({ id }: { id: string }) {
             <li>
               <div className="vnode">
                 Personal Credential Data
-                <small>{demo && entry.sampleText ? `Sample (illustrative): ${entry.sampleText}` : "Kept off-chain. Not visible to TrustBridge."}</small>
+                <small>{demo && entry.sampleText ? `Sample (illustrative): ${entry.sampleText}` : "Kept off-chain. Not visible to Pramaan."}</small>
               </div>
               <div className="vedge" aria-hidden><span>│</span><em>SHA-256</em><span>▼</span></div>
             </li>
@@ -129,7 +129,7 @@ export default function CredentialDetails({ id }: { id: string }) {
         <section className="card privacy">
           <h2>Privacy Protection</h2>
           <p><strong>Personal information is not stored directly on-chain.</strong></p>
-          <p className="hint">TrustBridge stores cryptographic proof needed to verify the credential without exposing the underlying personal data.</p>
+          <p className="hint">Pramaan stores cryptographic proof needed to verify the credential without exposing the underlying personal data.</p>
           <ul className="checks">
             <li>Personal data remains off-chain</li>
             <li>Cryptographic hash anchored on Solana</li>

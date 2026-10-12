@@ -12,11 +12,12 @@ export interface ActivityRow {
   ok: boolean;
   kind: ActivityKind;
   label: string;
+  signer: string | null;
 }
 
 const prettify = (name: string) => name.replace(/([A-Z])/g, " $1").trim();
 
-/** Real on-chain activity: recent transactions that touched the TrustBridge program, labelled from program logs. */
+/** Real on-chain activity: recent transactions that touched the Pramaan program, labelled from program logs. */
 export function useActivity(limit: number, refreshKey = 0) {
   const { connection } = useConnection();
   const [rows, setRows] = useState<ActivityRow[]>([]);
@@ -30,6 +31,7 @@ export function useActivity(limit: number, refreshKey = 0) {
       const sigs = await connection.getSignaturesForAddress(PROGRAM_ID, { limit }, "confirmed");
 
       const labels = new Map<string, string>();
+      const signers = new Map<string, string>();
       if (sigs.length > 0) {
         try {
           const txs = await connection.getParsedTransactions(
@@ -42,6 +44,8 @@ export function useActivity(limit: number, refreshKey = 0) {
             );
             const m = log?.match(/Instruction: (\w+)/);
             if (m) labels.set(sigs[i].signature, m[1]);
+            const payer = tx?.transaction.message.accountKeys[0]?.pubkey;
+            if (payer) signers.set(sigs[i].signature, payer.toBase58());
           });
         } catch {
           /* labels are optional */
@@ -59,6 +63,7 @@ export function useActivity(limit: number, refreshKey = 0) {
             ok: s.err === null,
             kind,
             label: raw ? prettify(raw) : "Transaction",
+            signer: signers.get(s.signature) ?? null,
           };
         })
       );
