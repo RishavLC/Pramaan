@@ -133,58 +133,22 @@ records.
 
 ## Screenshots
 
-Add your own screenshots to `docs/images/` in the repository root. The
-image paths below are placeholders; replace each filename with the
-actual image filename you save.
-
-```{=html}
-<!-- SCREENSHOT PLACEHOLDER 2: Save a screenshot of the dashboard as docs/images/dashboard.png. -->
-```
 ### Dashboard
 
 ![Dashboard screenshot](docs/images/dashboard.png)
 
-```{=html}
-<!-- SCREENSHOT PLACEHOLDER 3: Save a screenshot of the agency directory as docs/images/agencies.png. -->
-```
 ### Agency directory
 
 ![Agency directory screenshot](docs/images/agencies.png)
 
-```{=html}
-<!-- SCREENSHOT PLACEHOLDER 4: Save a screenshot of the credential registry/details page as docs/images/credentials.png. -->
-```
 ### Credential registry
 
 ![Credential registry screenshot](docs/images/credentials.png)
 
-```{=html}
-<!-- SCREENSHOT PLACEHOLDER 5: Save a screenshot of the verification result as docs/images/verification.png. -->
-```
 ### Credential verification
 
 ![Verification screenshot](docs/images/verification.png)
 
-```{=html}
-<!-- SCREENSHOT PLACEHOLDER 6: Save a screenshot of the Phantom wallet connection or issue/revoke flow as docs/images/wallet-issue.png. -->
-```
-
-### How to change screenshot paths
-
-The links above are **relative to the repository root**, where this
-`README.md` lives. For example:
-
-``` markdown
-![Dashboard screenshot](docs/images/dashboard.png)
-```
-
-To use a different filename or folder, change the path inside the
-parentheses. For example, if you save the image as
-`screenshots/home-page.jpg`, change it to:
-
-``` markdown
-![Dashboard screenshot](screenshots/home-page.jpg)
-```
 
 Recommended folder layout:
 
@@ -199,12 +163,6 @@ trust-bridge/
         ├── verification.png
         └── wallet-issue.png
 ```
-
-Create `docs/images/` yourself and put your screenshot files there.
-GitHub displays the images when the filenames and paths match exactly,
-including capitalization. If you have not added screenshots yet, the
-image areas will show as broken links until you add the files or remove
-those image lines.
 
 ## Technology stack
 
